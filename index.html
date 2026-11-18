@@ -94,6 +94,10 @@
   details[open] summary::after { content: "–"; }
   details p { margin: 10px 0 0; color: var(--testo-tenue); }
 
+  @media print {
+    details::details-content { content-visibility: visible; display: block; }
+    summary::after { content: ""; }
+  }
   .chiusura { text-align: center; }
   .chiusura .bottone { margin: 0 auto; }
   footer { padding: 28px 0 40px; font-size: .88rem; color: var(--testo-tenue); text-align: center; }
