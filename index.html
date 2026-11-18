@@ -100,6 +100,19 @@
   }
   .chiusura { text-align: center; }
   .chiusura .bottone { margin: 0 auto; }
+  [hidden] { display: none !important; }
+  video, audio { display: block; width: 100%; margin-top: 8px; }
+  video { border-radius: 12px; background: var(--testo); max-height: 70vh; }
+
+  .domanda { margin-bottom: 18px; }
+  .domanda label { display: block; font-weight: 600; margin-bottom: 6px; }
+  .domanda textarea {
+    display: block; width: 100%; min-height: 64px; resize: vertical;
+    font: inherit; font-size: 1rem; color: var(--testo);
+    background: #fff; border: 1px solid var(--linea); border-radius: 10px; padding: 10px 12px;
+  }
+  .domanda textarea:focus-visible { outline: 3px solid var(--salvia); outline-offset: 1px; border-color: var(--salvia); }
+  .piccolo { font-size: .92rem; color: var(--testo-tenue); }
   footer { padding: 28px 0 40px; font-size: .88rem; color: var(--testo-tenue); text-align: center; }
   footer a { color: var(--salvia); }
 </style>
@@ -117,6 +130,13 @@
 </section>
 
 <main>
+<section id="sezione-video" hidden>
+  <div class="contenitore">
+    <h2>Due parole prima di entrare</h2>
+    <video id="video" controls preload="metadata" playsinline></video>
+  </div>
+</section>
+
 <section>
   <div class="contenitore">
     <h2>Il prossimo incontro</h2>
@@ -124,6 +144,11 @@
       <p class="etichetta" id="titolo-incontro">il Ritrovarsi del giovedì</p>
       <p class="quando" id="quando">Il primo giovedì di ogni mese, ore 20:30</p>
       <p>Un'ora online, su Google Meet. Il link arriva nel gruppo, nel canale degli annunci.</p>
+    </div>
+    <p style="margin-top:1em">Tra un incontro e l'altro: ogni lunedì, nel gruppo, arriva una domanda per la settimana. Rispondi se ti va.</p>
+    <div class="riquadro" id="numeri" hidden style="margin-top:1.2em">
+      <p class="etichetta">Come sta andando</p>
+      <p id="frase-numeri"></p>
     </div>
   </div>
 </section>
@@ -142,9 +167,34 @@
 
 <section>
   <div class="contenitore">
+    <h2>Prova adesso</h2>
+    <p>Fermati un paio di minuti. Tre domande, solo per te: quello che scrivi resta su questo schermo, non arriva a nessuno, nemmeno a me, e sparisce quando chiudi la pagina.</p>
+    <div class="domanda">
+      <label for="d1">Come stai, adesso? Una parola basta.</label>
+      <textarea id="d1" rows="2"></textarea>
+    </div>
+    <div class="domanda">
+      <label for="d2">Dove lo senti, nel corpo?</label>
+      <textarea id="d2" rows="2"></textarea>
+    </div>
+    <div class="domanda">
+      <label for="d3">Di cosa avresti bisogno, questa settimana?</label>
+      <textarea id="d3" rows="2"></textarea>
+    </div>
+    <p class="piccolo">Se ti va, porta le tue risposte al prossimo giovedì.</p>
+    <div id="sezione-audio" hidden>
+      <p style="margin-top:1.2em"><strong>Oppure ascolta la pratica del giovedì</strong> (5 minuti, con gli occhi chiusi se vuoi).</p>
+      <audio id="audio" controls preload="none"></audio>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="contenitore">
     <h2>Chi sono</h2>
     <div class="chi">
-      <div class="foto" aria-hidden="true">M</div>
+      <img class="foto" id="foto" alt="Matteo Nicolini" hidden>
+      <div class="foto" id="foto-segnaposto" aria-hidden="true">M</div>
       <div>
         <p>Mi chiamo Matteo, faccio il facilitatore e vivo in Veneto.</p>
         <p>In questi anni ho visto tante persone comprare un corso, un percorso, un oggetto. E poi restare sole, con quella cosa in mano, a chiedersi se stanno sbagliando qualcosa.</p>
@@ -196,7 +246,7 @@
     </details>
     <details>
       <summary>E se il giovedì non posso?</summary>
-      <p>Il gruppo resta aperto tutto il mese: entri e scrivi quando vuoi. L'incontro dopo è il primo giovedì del mese successivo.</p>
+      <p>Il gruppo resta aperto tutto il mese: entri e scrivi quando vuoi, e ogni lunedì trovi la domanda della settimana. L'incontro dopo è il primo giovedì del mese successivo.</p>
     </details>
     <details>
       <summary>Serve esperienza?</summary>
@@ -237,6 +287,21 @@
     var testo = Ritrovarsi.formatta(r.inizio);
     document.getElementById('quando').textContent = testo.charAt(0).toUpperCase() + testo.slice(1);
     document.getElementById('titolo-incontro').textContent = r.titolo;
+  })();
+
+  // Foto, video, audio e numeri: compaiono solo quando sono scritti in CONFIG (incontro.js)
+  (function () {
+    if (!window.Ritrovarsi || typeof CONFIG === 'undefined') return;
+    function mostra(id) { document.getElementById(id).hidden = false; }
+    if (CONFIG.foto) {
+      var img = document.getElementById('foto');
+      img.onload = function () { img.hidden = false; document.getElementById('foto-segnaposto').hidden = true; };
+      img.src = CONFIG.foto;
+    }
+    if (CONFIG.video) { document.getElementById('video').src = CONFIG.video; mostra('sezione-video'); }
+    if (CONFIG.audio) { document.getElementById('audio').src = CONFIG.audio; mostra('sezione-audio'); }
+    var frase = Ritrovarsi.fraseNumeri(CONFIG.numeri);
+    if (frase) { document.getElementById('frase-numeri').textContent = frase; mostra('numeri'); }
   })();
 </script>
 </body>

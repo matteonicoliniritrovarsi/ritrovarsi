@@ -43,7 +43,22 @@
       ', ore ' + d.getHours() + ':' + (min < 10 ? '0' : '') + min;
   }
 
-  var esporta = { prossimoIncontro: prossimoIncontro, formatta: formatta };
+  // Frase del riquadro "Come sta andando"; null = riquadro nascosto.
+  function fraseNumeri(n) {
+    if (!n) return null;
+    var parti = [];
+    var incontri = (n.incontri || []).slice().sort(function (a, b) { return a.data < b.data ? 1 : -1; });
+    if (incontri.length) {
+      var p = incontri[0].data.split('-');
+      var d = new Date(+p[0], +p[1] - 1, +p[2]);
+      parti.push('Al Ritrovarsi di ' + GIORNI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()] +
+        ' eravamo in ' + incontri[0].presenti + '.');
+    }
+    if (n.nelGruppo) parti.push('Nel gruppo siamo in ' + n.nelGruppo + '.');
+    return parti.length ? parti.join(' ') : null;
+  }
+
+  var esporta = { prossimoIncontro: prossimoIncontro, formatta: formatta, fraseNumeri: fraseNumeri };
   if (typeof module !== 'undefined' && module.exports) { module.exports = esporta; }
   else { radice.Ritrovarsi = esporta; }
 })(this);
@@ -51,4 +66,10 @@
 // ---- Da modificare quando serve (lo fa Claude) ----
 // extra: incontri in più, es. { data: '2026-12-23', titolo: 'Ritrovarsi a Natale' }
 // annullati: date 'AAAA-MM-GG' di primi giovedì saltati
-var CONFIG = { ora: 20, minuti: 30, durata: 60, extra: [], annullati: [] };
+// numeri: dopo ogni incontro, es. incontri: [{ data: '2026-12-03', presenti: 7 }], nelGruppo: 42
+// foto, video, audio: nome del file nella cartella (es. 'foto.jpg'); vuoto = non si vede
+var CONFIG = {
+  ora: 20, minuti: 30, durata: 60, extra: [], annullati: [],
+  numeri: { incontri: [], nelGruppo: null },
+  foto: '', video: '', audio: ''
+};

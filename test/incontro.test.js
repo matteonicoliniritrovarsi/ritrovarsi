@@ -1,7 +1,7 @@
 // Prove del calcolo del prossimo incontro: node --test test/
 const test = require('node:test');
 const assert = require('node:assert');
-const { prossimoIncontro, formatta } = require('../incontro.js');
+const { prossimoIncontro, formatta, fraseNumeri } = require('../incontro.js');
 
 const base = { ora: 20, minuti: 30, durata: 60, extra: [], annullati: [] };
 const giorno = (r) => r && `${r.inizio.getFullYear()}-${r.inizio.getMonth() + 1}-${r.inizio.getDate()}`;
@@ -47,4 +47,24 @@ test('la data si scrive in italiano', () => {
   assert.strictEqual(formatta(r.inizio), 'giovedì 3 dicembre, ore 20:30');
   const n = prossimoIncontro(new Date(2026, 11, 18, 10, 0), { ...base, extra: [{ data: '2026-12-23', titolo: 'x' }] });
   assert.strictEqual(formatta(n.inizio), 'mercoledì 23 dicembre, ore 20:30');
+});
+
+// Riquadro "Come sta andando": numeri veri, scritti in CONFIG.numeri dopo ogni incontro
+test('senza numeri il riquadro non compare', () => {
+  assert.strictEqual(fraseNumeri(undefined), null);
+  assert.strictEqual(fraseNumeri({ incontri: [], nelGruppo: null }), null);
+});
+
+test('ultimo incontro: vale il più recente, anche se scritto prima', () => {
+  const n = { incontri: [{ data: '2027-01-07', presenti: 9 }, { data: '2026-12-03', presenti: 7 }] };
+  assert.strictEqual(fraseNumeri(n), 'Al Ritrovarsi di giovedì 7 gennaio eravamo in 9.');
+});
+
+test('con le persone nel gruppo si aggiunge una frase', () => {
+  const n = { incontri: [{ data: '2026-12-03', presenti: 7 }], nelGruppo: 42 };
+  assert.strictEqual(fraseNumeri(n), 'Al Ritrovarsi di giovedì 3 dicembre eravamo in 7. Nel gruppo siamo in 42.');
+});
+
+test('solo le persone nel gruppo, prima del primo incontro', () => {
+  assert.strictEqual(fraseNumeri({ incontri: [], nelGruppo: 12 }), 'Nel gruppo siamo in 12.');
 });
