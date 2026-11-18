@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ritrovarsi · con Matteo Nicolini</title>
+<meta name="description" content="Un gruppo e un incontro online gratuito ogni primo giovedì del mese, per chi fa un percorso e non vuole farlo da solo. Senza vendite.">
+<meta property="og:title" content="Ritrovarsi: con te stesso, con gli altri">
+<meta property="og:description" content="Un incontro online gratuito ogni primo giovedì del mese, alle 20:30. Senza vendite.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23B5653A'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23F3E9DC'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --terracotta: #B5653A;
+    --terracotta-scuro: #8F4C29;
+    --crema: #F3E9DC;
+    --crema-chiara: #FBF6EF;
+    --salvia: #55624C;
+    --testo: #2E2A26;
+    --testo-tenue: #5E564E;
+    --linea: #E2D5C4;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--crema-chiara);
+    color: var(--testo);
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: normal; line-height: 1.25; margin: 0 0 .6em; }
+  h1 { font-size: 2.1rem; }
+  h2 { font-size: 1.5rem; color: var(--salvia); }
+  p { margin: 0 0 1em; }
+  .contenitore { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+  section { padding: 44px 0; border-bottom: 1px solid var(--linea); }
+  section:last-of-type { border-bottom: none; }
+
+  .apertura { background: var(--crema); padding: 56px 0 48px; border-bottom: none; }
+  .marchio { font-size: .85rem; letter-spacing: .14em; text-transform: uppercase; color: var(--salvia); margin-bottom: 18px; }
+  .apertura .sotto { font-size: 1.12rem; color: var(--testo-tenue); }
+
+  .bottone {
+    display: block; width: 100%; max-width: 420px;
+    background: var(--terracotta); color: #fff; text-decoration: none; text-align: center;
+    font-size: 1.12rem; font-weight: 600; padding: 17px 24px; border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(143, 76, 41, .25);
+    transition: background .15s;
+  }
+  .bottone:hover, .bottone:focus-visible { background: var(--terracotta-scuro); }
+  .bottone:focus-visible { outline: 3px solid var(--salvia); outline-offset: 3px; }
+  .nota-bottone { font-size: .92rem; color: var(--testo-tenue); margin: 10px 0 0; }
+
+  .riquadro {
+    background: #fff; border: 1px solid var(--linea); border-left: 5px solid var(--terracotta);
+    border-radius: 12px; padding: 20px 22px;
+  }
+  .riquadro .quando { font-family: Georgia, serif; font-size: 1.35rem; margin: 4px 0 6px; }
+  .riquadro .etichetta { font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; color: var(--salvia); margin: 0; }
+  .riquadro p:last-child { margin-bottom: 0; }
+
+  ol.passi { padding-left: 1.3em; margin: 0; }
+  ol.passi li { margin-bottom: .6em; }
+  ol.passi li::marker { color: var(--terracotta); font-weight: 600; }
+
+  .chi { display: flex; gap: 20px; align-items: flex-start; }
+  .foto {
+    flex: 0 0 96px; width: 96px; height: 96px; border-radius: 50%;
+    background: var(--salvia); color: var(--crema);
+    display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, serif; font-size: 2.4rem; object-fit: cover;
+  }
+  @media (max-width: 480px) {
+    h1 { font-size: 1.8rem; }
+    .chi { flex-direction: column; }
+  }
+
+  .due { display: grid; gap: 16px; }
+  @media (min-width: 600px) { .due { grid-template-columns: 1fr 1fr; } }
+  .due ul { margin: 0; padding-left: 1.1em; }
+  .due li { margin-bottom: .5em; }
+  .si h3, .no h3 { font-size: 1.05rem; margin: 0 0 .5em; }
+  .si h3 { color: var(--salvia); }
+  .no h3 { color: var(--terracotta-scuro); }
+
+  details { border-bottom: 1px solid var(--linea); padding: 14px 0; }
+  details:first-of-type { border-top: 1px solid var(--linea); }
+  summary { cursor: pointer; font-weight: 600; list-style: none; position: relative; padding-right: 28px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; position: absolute; right: 4px; top: -2px; font-size: 1.4rem; color: var(--terracotta); }
+  details[open] summary::after { content: "–"; }
+  details p { margin: 10px 0 0; color: var(--testo-tenue); }
+
+  .chiusura { text-align: center; }
+  .chiusura .bottone { margin: 0 auto; }
+  footer { padding: 28px 0 40px; font-size: .88rem; color: var(--testo-tenue); text-align: center; }
+  footer a { color: var(--salvia); }
+</style>
+</head>
+<body>
+
+<section class="apertura">
+  <div class="contenitore">
+    <div class="marchio">Ritrovarsi</div>
+    <h1>Ritrovarsi: con te stesso, con gli altri.</h1>
+    <p class="sotto">Un gruppo e un incontro online gratuito ogni mese, per chi fa un percorso e non vuole farlo da solo.</p>
+    <a class="bottone" href="https://chat.whatsapp.com/LINK-DA-INSERIRE">Entra nel gruppo</a>
+    <p class="nota-bottone">Gratis. Su WhatsApp. Niente da comprare per entrare.</p>
+  </div>
+</section>
+
+<main>
+<section>
+  <div class="contenitore">
+    <h2>Il prossimo incontro</h2>
+    <div class="riquadro">
+      <p class="etichetta" id="titolo-incontro">il Ritrovarsi del giovedì</p>
+      <p class="quando" id="quando">Il primo giovedì di ogni mese, ore 20:30</p>
+      <p>Un'ora online, su Google Meet. Il link arriva nel gruppo, nel canale degli annunci.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="contenitore">
+    <h2>Cosa succede in un incontro</h2>
+    <ol class="passi">
+      <li>Ci presentiamo, ognuno come vuole.</li>
+      <li>Facciamo insieme una pratica breve.</li>
+      <li>Ognuno risponde a una domanda, se gli va.</li>
+    </ol>
+    <p style="margin-top:1em">Puoi tenere la telecamera spenta. Non si vende niente: è solo un posto dove qualcuno ti ascolta.</p>
+  </div>
+</section>
+
+<section>
+  <div class="contenitore">
+    <h2>Chi sono</h2>
+    <div class="chi">
+      <div class="foto" aria-hidden="true">M</div>
+      <div>
+        <p>Mi chiamo Matteo, faccio il facilitatore e vivo in Veneto.</p>
+        <p>In questi anni ho visto tante persone comprare un corso, un percorso, un oggetto. E poi restare sole, con quella cosa in mano, a chiedersi se stanno sbagliando qualcosa.</p>
+        <p>Ritrovarsi nasce per fare il contrario: un posto dove ci si vede, ci si ascolta e nessuno ti vende niente. Intanto racconto il mio percorso sui social, con i numeri, anche quando non vanno bene.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="contenitore">
+    <h2>Per chi è</h2>
+    <div class="due">
+      <div class="si">
+        <h3>Fa per te se</h3>
+        <ul>
+          <li>hai fatto corsi, letto libri, provato tecniche, e poi ti sei ritrovato a farlo da solo;</li>
+          <li>ti farebbe bene parlarne con qualcuno che capisce;</li>
+          <li>vuoi fermarti un'ora al mese e accorgerti di come stai.</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3>Non fa per te se</h3>
+        <ul>
+          <li>cerchi una cura o una soluzione veloce: qui non ci sono promesse;</li>
+          <li>cerchi qualcuno che ti dica cosa fare: qui si ascolta prima di consigliare.</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:1.2em">Ritrovarsi non è una terapia e non sostituisce un medico o uno psicologo. Si condividono esperienze, non cure.</p>
+  </div>
+</section>
+
+<section>
+  <div class="contenitore">
+    <h2>Domande</h2>
+    <details>
+      <summary>Costa qualcosa?</summary>
+      <p>No. Il gruppo e l'incontro del primo giovedì sono gratis, e lo restano. Negli incontri non si vende niente.</p>
+    </details>
+    <details>
+      <summary>Devo parlare o accendere la telecamera?</summary>
+      <p>No. Puoi ascoltare e basta, con la telecamera spenta. Parli solo se ti va.</p>
+    </details>
+    <details>
+      <summary>Gli altri vedono il mio numero?</summary>
+      <!-- DA CONFERMARE dopo la prova da amministratore (scheda di partenza) -->
+      <p>Nel canale degli annunci il tuo numero lo vedo solo io. Nel gruppo dove ci si parla lo vede chi è nel gruppo: se preferisci, puoi restare solo negli annunci.</p>
+    </details>
+    <details>
+      <summary>E se il giovedì non posso?</summary>
+      <p>Il gruppo resta aperto tutto il mese: entri e scrivi quando vuoi. L'incontro dopo è il primo giovedì del mese successivo.</p>
+    </details>
+    <details>
+      <summary>Serve esperienza?</summary>
+      <p>No, né di meditazione né di altro. Basta esserci.</p>
+    </details>
+    <details>
+      <summary>E se poi voglio uscire?</summary>
+      <p>Esci dal gruppo quando vuoi, con un tocco, senza dover spiegare niente.</p>
+    </details>
+  </div>
+</section>
+
+<section class="chiusura">
+  <div class="contenitore">
+    <h2>Ci vediamo al prossimo Ritrovarsi?</h2>
+    <p>Entra nel gruppo: lì trovi il link del prossimo incontro.</p>
+    <a class="bottone" href="https://chat.whatsapp.com/LINK-DA-INSERIRE">Entra nel gruppo</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="contenitore">
+    <p>Matteo Nicolini · Ritrovarsi</p>
+    <!-- Profili social: si aggiungono quando esistono
+    <p><a href="#">Instagram</a> · <a href="#">Facebook</a> · <a href="#">TikTok</a></p>
+    -->
+    <p>Questa pagina non usa cookie né statistiche.</p>
+  </div>
+</footer>
+
+<script src="incontro.js"></script>
+<script>
+  (function () {
+    if (!window.Ritrovarsi) return;
+    var r = Ritrovarsi.prossimoIncontro(new Date(), CONFIG);
+    if (!r) return;
+    var testo = Ritrovarsi.formatta(r.inizio);
+    document.getElementById('quando').textContent = testo.charAt(0).toUpperCase() + testo.slice(1);
+    document.getElementById('titolo-incontro').textContent = r.titolo;
+  })();
+</script>
+</body>
+</html>

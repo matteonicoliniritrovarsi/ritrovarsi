@@ -1,0 +1,54 @@
+// Ritrovarsi: calcolo del prossimo incontro.
+// Regola fissa: il primo giovedì di ogni mese alle 20:30, un'ora.
+// Le eccezioni stanno in CONFIG (in fondo): incontri in più ed eventuali annullati.
+
+(function (radice) {
+  var GIORNI = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
+  var MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio',
+    'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+
+  function chiave(d) {
+    var m = d.getMonth() + 1, g = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (g < 10 ? '0' : '') + g;
+  }
+
+  function primoGiovedi(anno, mese) {
+    var primo = new Date(anno, mese, 1).getDay();
+    return 1 + ((4 - primo + 7) % 7);
+  }
+
+  function prossimoIncontro(adesso, cfg) {
+    var candidati = [];
+    for (var i = 0; i < 4; i++) {
+      var anno = adesso.getFullYear(), mese = adesso.getMonth() + i;
+      var g = primoGiovedi(anno, mese);
+      candidati.push({ inizio: new Date(anno, mese, g, cfg.ora, cfg.minuti), titolo: 'il Ritrovarsi del giovedì' });
+    }
+    (cfg.extra || []).forEach(function (e) {
+      var p = e.data.split('-');
+      candidati.push({ inizio: new Date(+p[0], +p[1] - 1, +p[2], cfg.ora, cfg.minuti), titolo: e.titolo });
+    });
+    var annullati = cfg.annullati || [];
+    var validi = candidati.filter(function (c) {
+      var fine = new Date(c.inizio.getTime() + cfg.durata * 60000);
+      return fine > adesso && annullati.indexOf(chiave(c.inizio)) === -1;
+    });
+    validi.sort(function (a, b) { return a.inizio - b.inizio; });
+    return validi[0] || null;
+  }
+
+  function formatta(d) {
+    var min = d.getMinutes();
+    return GIORNI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()] +
+      ', ore ' + d.getHours() + ':' + (min < 10 ? '0' : '') + min;
+  }
+
+  var esporta = { prossimoIncontro: prossimoIncontro, formatta: formatta };
+  if (typeof module !== 'undefined' && module.exports) { module.exports = esporta; }
+  else { radice.Ritrovarsi = esporta; }
+})(this);
+
+// ---- Da modificare quando serve (lo fa Claude) ----
+// extra: incontri in più, es. { data: '2026-12-23', titolo: 'Ritrovarsi a Natale' }
+// annullati: date 'AAAA-MM-GG' di primi giovedì saltati
+var CONFIG = { ora: 20, minuti: 30, durata: 60, extra: [], annullati: [] };
