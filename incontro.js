@@ -71,5 +71,5 @@
 var CONFIG = {
   ora: 20, minuti: 30, durata: 60, extra: [], annullati: [],
   numeri: { incontri: [], nelGruppo: null },
-  foto: '', video: '', audio: ''
+  foto: 'foto.jpg', video: '', audio: ''
 };
