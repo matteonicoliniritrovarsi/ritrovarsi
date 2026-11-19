@@ -1,5 +1,5 @@
 // Ritrovarsi: calcolo del prossimo incontro.
-// Regola fissa: il primo giovedì di ogni mese alle 20:30, un'ora.
+// Regola fissa: ogni giovedì alle 20:30, un'ora.
 // Le eccezioni stanno in CONFIG (in fondo): incontri in più ed eventuali annullati.
 
 (function (radice) {
@@ -12,18 +12,21 @@
     return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (g < 10 ? '0' : '') + g;
   }
 
-  function primoGiovedi(anno, mese) {
-    var primo = new Date(anno, mese, 1).getDay();
-    return 1 + ((4 - primo + 7) % 7);
+  function prossimiGiovedi(adesso, quanti) {
+    var risultato = [];
+    var base = new Date(adesso.getFullYear(), adesso.getMonth(), adesso.getDate());
+    var scarto = (4 - base.getDay() + 7) % 7;
+    base.setDate(base.getDate() + scarto);
+    for (var i = 0; i < quanti; i++) {
+      risultato.push(new Date(base.getFullYear(), base.getMonth(), base.getDate() + i * 7));
+    }
+    return risultato;
   }
 
   function prossimoIncontro(adesso, cfg) {
-    var candidati = [];
-    for (var i = 0; i < 4; i++) {
-      var anno = adesso.getFullYear(), mese = adesso.getMonth() + i;
-      var g = primoGiovedi(anno, mese);
-      candidati.push({ inizio: new Date(anno, mese, g, cfg.ora, cfg.minuti), titolo: 'il Ritrovarsi del giovedì' });
-    }
+    var candidati = prossimiGiovedi(adesso, 8).map(function (g) {
+      return { inizio: new Date(g.getFullYear(), g.getMonth(), g.getDate(), cfg.ora, cfg.minuti), titolo: 'il Ritrovarsi del giovedì' };
+    });
     (cfg.extra || []).forEach(function (e) {
       var p = e.data.split('-');
       candidati.push({ inizio: new Date(+p[0], +p[1] - 1, +p[2], cfg.ora, cfg.minuti), titolo: e.titolo });
@@ -65,7 +68,7 @@
 
 // ---- Da modificare quando serve (lo fa Claude) ----
 // extra: incontri in più, es. { data: '2026-12-23', titolo: 'Ritrovarsi a Natale' }
-// annullati: date 'AAAA-MM-GG' di primi giovedì saltati
+// annullati: date 'AAAA-MM-GG' di giovedì saltati
 // numeri: dopo ogni incontro, es. incontri: [{ data: '2026-12-03', presenti: 7 }], nelGruppo: 42
 // foto, video, audio: nome del file nella cartella (es. 'foto.jpg'); vuoto = non si vede
 var CONFIG = {
